@@ -1,0 +1,93 @@
+package sample;
+
+/**
+ This class defines the sample.Instate class, subclass of sample.Student.
+ Each sample.Instate student has all the characteristics of the sample.Student class,
+ and adds a funds field. The tuition of sample.Instate students is unique
+ from other subclasses, at $433 per credit with the opportunity
+ to receive funds to offset tuition.
+ @author Rose Sirohi, Caitlyn Romano
+ */
+
+
+public class Instate extends Student
+{
+    private int funds;
+    public static final int INSTATE_CPC = 433;
+
+    /**
+     Constructor for sample.Instate sample.Student subclass, adds funds field.
+     @param fname Student's first name
+     @param lname Student's last name
+     @param credit Student's number of credit hours
+     @param funds Student's amount of funds awarded
+     @return Instance of Instate Student subclass, with fields equal to the
+     parameters sent.
+     */
+    public Instate(String fname, String lname, int credit, int funds)
+    {
+        super(fname, lname, credit);
+        this.funds = funds;
+    }
+
+    /**
+     This method calculates the amount of tuition due for the sample.Instate sample.Student.
+     If credit hours are above 15, students only pay for up to 15 credits.
+     sample.Instate students pay $433 per credit.
+     sample.Instate full-time students may be granted funds to offset tuition costs.
+     @return Integer value of tuition due.
+     */
+    public int tuitionDue()
+    {
+        int tuition = 0;
+        if (credit >= FULLTIME){
+            tuition += FULLTIME_FEE;
+            tuition -= funds;
+            if (credit > 15){
+                tuition += INSTATE_CPC * 15;
+                return tuition;
+            }
+            tuition += INSTATE_CPC * credit;
+        }
+        else if (credit < FULLTIME){
+            tuition += PARTTIME_FEE + INSTATE_CPC * credit;
+        }
+
+        return tuition;
+    }
+
+    /**
+     Method returns a string with fname, lname, credit hours,
+     and funds fields of sample.Instate sample.Student.
+     @return fields of Instate Student as Strings.
+     */
+    public String toString()
+    {
+        return super.toString() + " " + this.funds;
+    }
+    /**
+     Test bed main, to check whether code works with various cases.
+     */
+    public static void main(String [] args)
+    {
+        String f, l;
+        f = "Bob";
+        l = "Ross";
+        //test toString()
+        Instate student1 = new Instate(f, l, 12, 200);
+        System.out.println(student1.toString());
+
+        //test tuitionDue()
+        Instate student2 = new Instate(f, l, 15, 500);
+        System.out.println(student2.tuitionDue());
+        Instate student3 = new Instate(f, l, 20, 0);
+        System.out.println(student3.tuitionDue());
+        Instate student4 = new Instate(f, l, 9, 0);
+        System.out.println(student4.tuitionDue());
+        Instate student5 = new Instate(f, l, 10, 1000);
+        System.out.println(student5.tuitionDue());
+        Instate student6 = new Instate(f, l, 15, 15000);
+        System.out.println(student6.tuitionDue());
+
+    }
+}
