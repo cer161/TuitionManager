@@ -32,8 +32,8 @@ public class Controller implements Initializable {
     public boolean exchange = false;
     public boolean hasFunding = false;
     public boolean disable = true;
-    public int tracker =0;
-    public int numStudents=0;
+    public int tracker = 0;
+    public int numStudents= 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -115,13 +115,19 @@ public class Controller implements Initializable {
     public void isTristate(){
         tristate = true;
     }
+
+
+
     /**
      * Method to set the exchange boolean to true if exchange button is pressed
      */
     public void isExchange(){
         exchange = true;
     }
-    //activate funding textbox here
+
+    /**
+     * Method to activate Funding checkmark
+     */
     public void clickFunding(ActionEvent actionEvent) {
         //increment tracker, when tracker is odd, funding box is checked.
         tracker++;
@@ -188,6 +194,7 @@ public class Controller implements Initializable {
             if (typeOfStudent == 3) {
                 if(creds<=9){
                     console.appendText("Error: Credits must exceed 9 for international students" + "\n");
+                    return;
                 }
                 International s = new International(fname, lname, creds, exchange);
                 addInternationalStudent(s);
@@ -235,10 +242,7 @@ public class Controller implements Initializable {
             console.appendText("Error: The list is empty" + "\n");
             return;
         }
-        //for(int i = 0; i < numStudents; i++) {
-        //    console.appendText(cs213[i].toString() + " tuition due: " + cs213[i].tuitionDue() + "\n");
-      //  }
-
+        console.appendText(cs213.toString());
     }
 
     //unfinished method to remove a student from the list
@@ -259,7 +263,9 @@ public class Controller implements Initializable {
             console.appendText("Error: The student does not exist." + "\n");
             return;
         }
+        console.appendText(fname + " " + lname + " removed from list.");
     }
 
 }
+
 

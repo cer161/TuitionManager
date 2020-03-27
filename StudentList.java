@@ -119,7 +119,7 @@ public class StudentList
     }
 
     /**
-     Method to print all Students in sample.StudentList
+     Method to print all Students in sample.StudentList to console
      */
     public void print()
     {
@@ -128,6 +128,19 @@ public class StudentList
             System.out.println(studentList[i].toString());
             System.out.println("tuition due: " + studentList[i].tuitionDue());
         }
+    }
+
+    /**
+    Method used in Controller, returns printable information of all Students in list.
+     @return String format of each Student in list.
+     */
+    public String toString()
+    {
+        for(int i = 0; i < numStudents; i++)
+        {
+            return studentList[i].toString() + " " + "tuition due: " + studentList[i].tuitionDue() + "\n";
+        }
+        return null;
     }
 
     /**
