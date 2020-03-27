@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane animated="false" prefHeight="569.0" prefWidth="416.0" text="Program 3 - Tuition Manager" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <content>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Pane prefHeight="120.0" prefWidth="394.0">
+               <children>
+                  <Label layoutX="39.0" layoutY="14.0" text="First Name" />
+                  <Label layoutX="40.0" layoutY="50.0" text="Last Name" />
+                  <Label layoutX="40.0" layoutY="89.0" text="Credit hours" />
+                  <TextField fx:id="firstName" layoutX="149.0" layoutY="9.0" />
+                  <TextField fx:id="lastName" layoutX="149.0" layoutY="45.0" />
+                  <TextField fx:id="credits" layoutX="149.0" layoutY="84.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="140.0" prefWidth="394.0">
+               <children>
+                  <Button layoutX="297.0" layoutY="56.0" mnemonicParsing="false" onAction="#removeStudent" prefHeight="28.0" prefWidth="87.0" text="Remove" />
+                  <Button fx:id="addBtn" layoutX="296.0" layoutY="10.0" mnemonicParsing="false" onAction="#pressAddButton" prefHeight="26.0" prefWidth="88.0" text="Add" />
+                  <Button fx:id="printBtn" layoutX="297.0" layoutY="99.0" mnemonicParsing="false" onAction="#printList" prefHeight="30.0" prefWidth="86.0" text="Print" />
+                  <Pane layoutX="7.0" layoutY="12.0" prefHeight="116.0" prefWidth="278.0">
+                     <children>
+                        <CheckBox fx:id="fundingBtn" layoutX="109.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickFunding" text="Funding" />
+                        <CheckBox fx:id="tristateBtn" layoutX="109.0" layoutY="49.0" mnemonicParsing="false" onAction="#isTristate" text="Tri-state Student" />
+                        <CheckBox fx:id="exchangeBtn" layoutX="106.0" layoutY="84.0" mnemonicParsing="false" onAction="#isExchange" text="Exchange Student" />
+                        <RadioButton fx:id="instateBtn" layoutY="14.0" mnemonicParsing="false" onAction="#isInstate" prefWidth="114.0" text="Instate" />
+                        <RadioButton fx:id="outstateBtn" layoutY="48.0" mnemonicParsing="false" onAction="#isOutstate" text="Outstate" />
+                        <RadioButton fx:id="internationalBtn" layoutY="84.0" mnemonicParsing="false" onAction="#isInternational" text="International" />
+                        <TextField fx:id="funding" layoutX="188.0" layoutY="9.0" prefHeight="27.0" prefWidth="87.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <TextArea fx:id="console" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+   </content>
+</TitledPane>
