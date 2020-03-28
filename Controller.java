@@ -1,3 +1,10 @@
+/**
+ This file defines the Controller class, which is a class
+ that interacts with the GUI to have user actions 
+ affect the program. 
+ @author Caitlyn Romano, Rose Sirohi
+ */
+
 package sample;
 
 import javafx.event.ActionEvent;
