@@ -32,8 +32,10 @@ public class Controller implements Initializable {
     public boolean exchange = false;
     public boolean hasFunding = false;
     public boolean disable = true;
-    public int tracker = 0;
-    public int numStudents= 0;
+    public int fundCheckTracker = 0;
+    public int tristateCheckTracker = 0;
+    public int exchangeCheckTracker = 0;
+    public int numberStudents= 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,7 +71,7 @@ public class Controller implements Initializable {
      * @return true if credits are entered properly, false otherwise
      */
     public boolean creditsEntered() {
-        if (credits.getText().trim().isEmpty()) return false;
+        if (credits.getText().trim().isEmpty())return false;
         return true;
     }
 
@@ -77,9 +79,20 @@ public class Controller implements Initializable {
      * Method set the student type to instate if instate button is pressed
      */
     public void isInstate(ActionEvent actionEvent) {
+        if (instateBtn.isSelected() == true){
+            typeOfStudent = 1;
+        }
+        else{
+            typeOfStudent = 0;
+        }
         funding.clear();
         funding.setDisable(true);
-        typeOfStudent = 1;
+        fundingBtn.setSelected(false);
+        tristateBtn.setSelected(false);
+        exchangeBtn.setSelected(false);
+        exchangeCheckTracker = 0;
+        fundCheckTracker = 0;
+        tristateCheckTracker = 0;
         fundingBtn.setDisable(!disable);
         internationalBtn.setDisable(disable);
         outstateBtn.setDisable(disable);
@@ -90,8 +103,20 @@ public class Controller implements Initializable {
      * Method to set the student type to outstate if outstate button is pressed
      */
     public void isOutstate(ActionEvent actionEvent) {
-        typeOfStudent = 2;
+        if (outstateBtn.isSelected() == true){
+            typeOfStudent = 2;
+        }
+        else{
+            typeOfStudent = 0;
+        }
         funding.setDisable(true);
+        fundingBtn.setSelected(false);
+        tristateBtn.setSelected(false);
+        exchangeBtn.setSelected(false);
+        exchangeCheckTracker = 0;
+        fundCheckTracker = 0;
+        tristateCheckTracker = 0;
+        fundingBtn.setDisable(disable);
         tristateBtn.setDisable(!disable);
         internationalBtn.setDisable(disable);
         instateBtn.setDisable(disable);
@@ -102,8 +127,20 @@ public class Controller implements Initializable {
      * Method to set the student type to international if international button is pressed
      */
     public void isInternational(ActionEvent actionEvent) {
-        typeOfStudent = 3;
+        if (internationalBtn.isSelected() == true){
+            typeOfStudent = 3;
+        }
+        else{
+            typeOfStudent = 0;
+        }
         funding.setDisable(true);
+        fundingBtn.setSelected(false);
+        tristateBtn.setSelected(false);
+        exchangeBtn.setSelected(false);
+        exchangeCheckTracker = 0;
+        fundCheckTracker = 0;
+        tristateCheckTracker = 0;
+        fundingBtn.setDisable(disable);
         exchangeBtn.setDisable(!disable);
         instateBtn.setDisable(disable);
         outstateBtn.setDisable(disable);
@@ -113,31 +150,43 @@ public class Controller implements Initializable {
      * Method to set the tristate boolean to true if tristate button is pressed
      */
     public void isTristate(){
+        //when tracker is odd, tristate box is checked.
+        tristateCheckTracker++;
+        if (tristateCheckTracker % 2 == 0){
+            tristate = false;
+            return;
+        }
         tristate = true;
     }
-
-
 
     /**
      * Method to set the exchange boolean to true if exchange button is pressed
      */
     public void isExchange(){
+        //when tracker is odd, exchange box is checked.
+        exchangeCheckTracker++;
+        if (exchangeCheckTracker % 2 == 0){
+            exchange = false;
+            return;
+        }
         exchange = true;
     }
 
     /**
-     * Method to activate Funding checkmark
+     * Method to activate Funding checkmark and enable funding textbox when checked.
      */
     public void clickFunding(ActionEvent actionEvent) {
-        //increment tracker, when tracker is odd, funding box is checked.
-        tracker++;
+        //increment tracker; when tracker is odd, funding box is checked.
+        fundCheckTracker++;
         funding.clear();
-        hasFunding = true;
-        if(fundingBtn.isDisabled() || instateBtn.isDisabled() || tracker%2 == 0) {
+        if(fundingBtn.isDisabled() || instateBtn.isDisabled() || fundCheckTracker % 2 == 0) {
+            hasFunding = false;
             funding.setDisable(true);
+            return;
         }
         else{
             funding.setDisable(false);
+            hasFunding = true;
         }
     }
 
@@ -175,13 +224,21 @@ public class Controller implements Initializable {
                         funds = Integer.parseInt(fundTemp);
                     } catch (NumberFormatException nfe) {
                         console.appendText("NumberFormatException: invalid funding" + "\n");
+                        //console.appendText("Please add a numeric value for the amount of" +
+                               // " funding for this student, or 0 if none." + "\n");
                         return;
                     }
-                    if (funds < 1) {
-                        console.appendText("Error: Funding must exceed 0" + "\n");
+                    if (funds < 0) {
+                        console.appendText("Error: Funding cannot be a negative value." + "\n");
+                        return;
+                    }
+                    if (creds < 9 && funds > 0)
+                    {
+                        console.appendText("Error: Part-time students are not eligible for funding." + "\n");
                         return;
                     }
                 }
+
                 Instate s = new Instate(fname, lname, creds, funds);
                 addInstateStudent(s);
             }
@@ -192,8 +249,8 @@ public class Controller implements Initializable {
             }
 
             if (typeOfStudent == 3) {
-                if(creds<=9){
-                    console.appendText("Error: Credits must exceed 9 for international students" + "\n");
+                if(creds < 9){
+                    console.appendText("Error: Credits must be at least 9 for international students" + "\n");
                     return;
                 }
                 International s = new International(fname, lname, creds, exchange);
@@ -204,55 +261,87 @@ public class Controller implements Initializable {
             console.appendText("Please fill in all required fields" + "\n");
             return;
         }
+        fundingBtn.setSelected(false);
+        funding.clear();
+        tristateBtn.setSelected(false);
+        exchangeBtn.setSelected(false);
+        exchangeCheckTracker = 0;
+        fundCheckTracker = 0;
+        tristateCheckTracker = 0;
+        typeOfStudent = 0;
     }
 
+    /**
+     * Method to add Instate student to list, if the student has not
+     * already been added.
+     */
     public void addInstateStudent(Instate student) {
         if (cs213.contains(student) == true) {
             console.appendText("Student has already been added." + "\n");
             return;
         }
         cs213.add(student);
-        numStudents++;
+        numberStudents++;
         console.appendText("Student has been added successfully." + "\n");
     }
 
+    /**
+     * Method to add Outstate student to list, if the student has not
+     * already been added.
+     */
     public void addOutstateStudent(Outstate student) {
         if (cs213.contains(student) == true) {
             console.appendText("Student has already been added." + "\n");
             return;
         }
         cs213.add(student);
-        numStudents++;
+        numberStudents++;
         console.appendText("Student has been added successfully." + "\n");
+        tristate = false;
     }
 
+    /**
+     * Method to add International student to list, if the student has not
+     * already been added.
+     */
     public void addInternationalStudent(International student) {
-         if(cs213.contains(student)==true) {
-        console.appendText("Student has already been added." + "\n");
-        return;
+         if(cs213.contains(student) == true) {
+            console.appendText("Student has already been added." + "\n");
+            return;
          }
         cs213.add(student);
-         numStudents++;
+         numberStudents++;
         console.appendText("Student has been added successfully."+"\n");
     }
 
-    //unfinished method to print the list
+    /**
+     * Method to print the list of Students, as well as the data
+     * associated with each Student, unless the list is empty.
+     */
     public void printList(ActionEvent actionEvent) {
-        if (cs213.isEmpty()){
+        if (cs213.isEmpty() || numberStudents == 0){
             console.appendText("Error: The list is empty" + "\n");
             return;
         }
-        console.appendText(cs213.toString());
+        for(int i = 0; i < numberStudents; i++)
+        {
+            console.appendText(cs213.toString(i));
+        }
+        return;
     }
 
-    //unfinished method to remove a student from the list
+    /**
+     * Method to remove a student from the list, unless the list is empty
+     * or the student is not in the list.
+     */
     public void removeStudent(ActionEvent actionEvent) {
         if (cs213.isEmpty()){
             console.appendText("Error: The list is empty" + "\n");
             return;
         }
         if (!firstNameEntered() || !lastNameEntered()){
-            console.appendText("Please enter the first and last name of the student you want to delete" + "\n");
+            console.appendText("Please enter the first and last name of the student" +
+                    " you want to delete" + "\n");
             return;
         }
         String fname = firstName.textProperty().get().trim();
@@ -263,7 +352,15 @@ public class Controller implements Initializable {
             console.appendText("Error: The student does not exist." + "\n");
             return;
         }
-        console.appendText(fname + " " + lname + " removed from list.");
+        numberStudents--;
+        console.appendText(fname + " " + lname + " removed from list." + "\n");
+        fundingBtn.setSelected(false);
+        funding.clear();
+        tristateBtn.setSelected(false);
+        exchangeBtn.setSelected(false);
+        exchangeCheckTracker = 0;
+        fundCheckTracker = 0;
+        tristateCheckTracker = 0;
     }
 
 }

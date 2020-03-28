@@ -134,13 +134,9 @@ public class StudentList
     Method used in Controller, returns printable information of all Students in list.
      @return String format of each Student in list.
      */
-    public String toString()
+    public String toString(int studentIndex)
     {
-        for(int i = 0; i < numStudents; i++)
-        {
-            return studentList[i].toString() + " " + "tuition due: " + studentList[i].tuitionDue() + "\n";
-        }
-        return null;
+        return studentList[studentIndex].toString() + " " + "tuition due: " + studentList[studentIndex].tuitionDue() + "\n";
     }
 
     /**
