@@ -1,7 +1,7 @@
 /**
  This file defines the Controller class, which is a class
- that interacts with the GUI to have user actions 
- affect the program. 
+ that interacts with the GUI to have user actions
+ affect the program.
  @author Caitlyn Romano, Rose Sirohi
  */
 
@@ -43,13 +43,16 @@ public class Controller implements Initializable {
     public int tristateCheckTracker = 0;
     public int exchangeCheckTracker = 0;
     public int numberStudents= 0;
+    public static final int INSTATE = 1;
+    public static final int OUTSTATE = 2;
+    public static final int INTERNATIONAL = 3;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    funding.setDisable(true);
-    fundingBtn.setDisable(true);
-    tristateBtn.setDisable(true);
-    exchangeBtn.setDisable(true);
+        funding.setDisable(true);
+        fundingBtn.setDisable(true);
+        tristateBtn.setDisable(true);
+        exchangeBtn.setDisable(true);
     }
 
     /**
@@ -87,7 +90,7 @@ public class Controller implements Initializable {
      */
     public void isInstate(ActionEvent actionEvent) {
         if (instateBtn.isSelected() == true){
-            typeOfStudent = 1;
+            typeOfStudent = INSTATE;
         }
         else{
             typeOfStudent = 0;
@@ -111,7 +114,7 @@ public class Controller implements Initializable {
      */
     public void isOutstate(ActionEvent actionEvent) {
         if (outstateBtn.isSelected() == true){
-            typeOfStudent = 2;
+            typeOfStudent = OUTSTATE;
         }
         else{
             typeOfStudent = 0;
@@ -135,7 +138,7 @@ public class Controller implements Initializable {
      */
     public void isInternational(ActionEvent actionEvent) {
         if (internationalBtn.isSelected() == true){
-            typeOfStudent = 3;
+            typeOfStudent = INTERNATIONAL;
         }
         else{
             typeOfStudent = 0;
@@ -163,6 +166,7 @@ public class Controller implements Initializable {
             tristate = false;
             return;
         }
+        typeOfStudent = OUTSTATE;
         tristate = true;
     }
 
@@ -176,6 +180,7 @@ public class Controller implements Initializable {
             exchange = false;
             return;
         }
+        typeOfStudent = INTERNATIONAL;
         exchange = true;
     }
 
@@ -193,6 +198,7 @@ public class Controller implements Initializable {
         }
         else{
             funding.setDisable(false);
+            typeOfStudent = INSTATE;
             hasFunding = true;
         }
     }
@@ -223,7 +229,7 @@ public class Controller implements Initializable {
             }
 
 
-            if (typeOfStudent == 1) {
+            if (typeOfStudent == INSTATE) {
                 int funds = 0;
                 if(hasFunding) {
                     String fundTemp = funding.getText();
@@ -232,7 +238,7 @@ public class Controller implements Initializable {
                     } catch (NumberFormatException nfe) {
                         console.appendText("NumberFormatException: invalid funding" + "\n");
                         //console.appendText("Please add a numeric value for the amount of" +
-                               // " funding for this student, or 0 if none." + "\n");
+                        // " funding for this student, or 0 if none." + "\n");
                         return;
                     }
                     if (funds < 0) {
@@ -250,12 +256,12 @@ public class Controller implements Initializable {
                 addInstateStudent(s);
             }
 
-            if (typeOfStudent == 2) {
+            if (typeOfStudent == OUTSTATE) {
                 Outstate s = new Outstate(fname, lname, creds, tristate);
                 addOutstateStudent(s);
             }
 
-            if (typeOfStudent == 3) {
+            if (typeOfStudent == INTERNATIONAL) {
                 if(creds < 9){
                     console.appendText("Error: Credits must be at least 9 for international students" + "\n");
                     return;
@@ -284,12 +290,18 @@ public class Controller implements Initializable {
      */
     public void addInstateStudent(Instate student) {
         if (cs213.contains(student) == true) {
-            console.appendText("Student has already been added." + "\n");
+            console.appendText( "Student has already been added." + "\n");
             return;
         }
         cs213.add(student);
         numberStudents++;
+        firstName.clear();
+        lastName.clear();
+        credits.clear();
+        fundingBtn.setDisable(true);
+        funding.setDisable(true);
         console.appendText("Student has been added successfully." + "\n");
+        hasFunding = false;
     }
 
     /**
@@ -303,6 +315,9 @@ public class Controller implements Initializable {
         }
         cs213.add(student);
         numberStudents++;
+        firstName.clear();
+        lastName.clear();
+        credits.clear();
         console.appendText("Student has been added successfully." + "\n");
         tristate = false;
     }
@@ -312,13 +327,17 @@ public class Controller implements Initializable {
      * already been added.
      */
     public void addInternationalStudent(International student) {
-         if(cs213.contains(student) == true) {
+        if(cs213.contains(student) == true) {
             console.appendText("Student has already been added." + "\n");
             return;
-         }
+        }
         cs213.add(student);
-         numberStudents++;
+        numberStudents++;
+        firstName.clear();
+        lastName.clear();
+        credits.clear();
         console.appendText("Student has been added successfully."+"\n");
+        exchange = false;
     }
 
     /**
@@ -334,6 +353,9 @@ public class Controller implements Initializable {
         {
             console.appendText(cs213.toString(i));
         }
+        firstName.clear();
+        lastName.clear();
+        credits.clear();
         return;
     }
 
@@ -368,8 +390,9 @@ public class Controller implements Initializable {
         exchangeCheckTracker = 0;
         fundCheckTracker = 0;
         tristateCheckTracker = 0;
+        firstName.clear();
+        lastName.clear();
+        credits.clear();
     }
 
 }
-
-
