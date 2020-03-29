@@ -1,5 +1,8 @@
+/**
+ This class runs both the GUI and console version of tuition manager.
+ @author Caitlyn Romano, Rose Sirohi
+ */
 package sample;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
